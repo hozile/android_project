@@ -1,6 +1,7 @@
+import 'package:final_project/screens/subject_taken.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/screens/login.dart';
-import 'package:final_project/screens/subject_taken.dart';
+// import 'package:final_project/screens/subject_taken.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -15,12 +16,10 @@ class HomePage extends StatelessWidget {
           style: TextStyle(
             fontSize: 25,
             fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.bold, 
-
+            fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: const Color.fromARGB(246, 255, 211, 80),
-
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -46,10 +45,10 @@ class HomePage extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.yellow,
-                  foregroundColor: Colors.white, 
+                  foregroundColor: Colors.white,
                   textStyle: const TextStyle(
-                    fontSize: 22, 
-                    fontWeight: FontWeight.bold, 
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 child: const Text('Subject Taken'),
@@ -59,21 +58,20 @@ class HomePage extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: SizedBox(
-              width: 200.0, 
+              width: 200.0,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, 
-                  foregroundColor: Colors.white, 
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
                   textStyle: const TextStyle(
-                    fontSize: 22, 
-                    fontWeight: FontWeight.bold, 
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 child: const Text('Exam Result'),
@@ -88,16 +86,15 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, 
-                  foregroundColor: Colors.white, 
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
                   textStyle: const TextStyle(
-                    fontSize: 22, 
-                    fontWeight: FontWeight.bold, 
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 child: const Text('Attendance'),
@@ -112,16 +109,15 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, 
-                  foregroundColor: Colors.white, 
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
                   textStyle: const TextStyle(
-                    fontSize: 22, 
-                    fontWeight: FontWeight.bold, 
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 child: const Text('Profile'),
@@ -136,16 +132,15 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey, 
-                  foregroundColor: Colors.white, 
+                  backgroundColor: Colors.grey,
+                  foregroundColor: Colors.white,
                   textStyle: const TextStyle(
-                    fontSize: 22, 
-                    fontWeight: FontWeight.bold, 
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 child: const Text('Logout'),

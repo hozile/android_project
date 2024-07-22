@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-<<<<<<< HEAD
-=======
 import 'package:final_project/screens/login.dart';
->>>>>>> b97c2a2 (Final project with login,home and subject taken screens)
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,11 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-<<<<<<< HEAD
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-=======
       home: const LoginPage(),
->>>>>>> b97c2a2 (Final project with login,home and subject taken screens)
     );
   }
 }
