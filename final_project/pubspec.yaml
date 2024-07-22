@@ -54,7 +54,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+<<<<<<< HEAD
 
+=======
+  assets:
+    - assets/neuc_logo.png
+>>>>>>> b97c2a2 (Final project with login,home and subject taken screens)
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
