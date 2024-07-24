@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:final_project/screens/home.dart';
-import 'package:final_project/screens/login.dart';
+import 'package:final_project/services/auth_services.dart';
 
 class SubjectTakenPage extends StatelessWidget {
-  const SubjectTakenPage({super.key});
+  SubjectTakenPage({super.key});
+
+  // Initialize AuthService instance
+  final AuthService _authService = AuthService();
+
+  void _signoutuser(BuildContext context) {
+    _authService.signOutUser(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +45,18 @@ class SubjectTakenPage extends StatelessWidget {
                     lecturer: 'Alex Law Teng Yi',
                     backgroundColor: Colors.pink,
                   ),
+                  CustomCard(
+                    image: 'assets/neuc_logo.png',
+                    title: 'Introduction To Android Programming',
+                    lecturer: 'Mr Zulhilmi',
+                    backgroundColor: Colors.blue,
+                  ),
+                  CustomCard(
+                    image: 'assets/neuc_logo.png',
+                    title: 'Introduction To Operating System',
+                    lecturer: 'Mr Lee Jia Khang',
+                    backgroundColor: Colors.orange,
+                  ),
                 ],
               ),
             ),
@@ -49,20 +68,15 @@ class SubjectTakenPage extends StatelessWidget {
                     // Navigate to HomePage
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                     );
                   },
                   child: const Text('Home'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    // Navigate to LoginPage
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
-                    );
-                  },
+                onPressed: () {
+                  _signoutuser(context);
+                },
                   child: const Text('Logout'),
                 ),
               ],

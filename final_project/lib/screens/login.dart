@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
             _passwordController.text == 'password') {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(builder: (context) => HomePage()),
           );
         } else {
           _errorMessage = 'Invalid username or password';

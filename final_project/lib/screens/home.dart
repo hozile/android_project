@@ -1,16 +1,24 @@
+import 'package:final_project/screens/authpage.dart';
 import 'package:final_project/screens/subject_taken.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/screens/login.dart';
-// import 'package:final_project/screens/subject_taken.dart';
+import 'package:final_project/services/auth_services.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  // Initialize AuthService instance
+  final AuthService _authService = AuthService();
+
+  void _signoutuser(BuildContext context) {
+    _authService.signOutUser(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 254, 236, 164),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           'Home Page',
           style: TextStyle(
@@ -40,7 +48,7 @@ class HomePage extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SubjectTakenPage()),
+                        builder: (context) => SubjectTakenPage ()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -63,7 +71,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const AuthPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -86,7 +94,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const AuthPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -109,7 +117,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const AuthPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -130,10 +138,7 @@ class HomePage extends StatelessWidget {
               width: 200.0, // button width
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
+                  _signoutuser(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
