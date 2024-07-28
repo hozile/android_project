@@ -66,29 +66,6 @@ class HomePage extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: SizedBox(
-              width: 200.0,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AuthPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  textStyle: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: const Text('Exam Result'),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
               width: 200.0, // button width
               child: ElevatedButton(
                 onPressed: () {
