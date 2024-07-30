@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 // import 'package:final_project/screens/login.dart';
-import 'package:final_project/screens/authpage.dart';
+import 'package:final_project/screens/loginpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,11 +23,10 @@ class MyApp extends StatelessWidget {
       title: 'NEUC STUDENT APPLICATION',
       theme: ThemeData(
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const AuthPage(),
+      home: const LoginPage(),
     );
   }
 }
-
