@@ -1,27 +1,16 @@
+import 'package:final_project/screens/exam_result_page.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/screens/authpage.dart';
 import 'package:final_project/screens/home.dart';
 import 'package:final_project/services/auth_services.dart';
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SubjectTakenPage(),
-    );
-  }
-}
 
 class SubjectTakenPage extends StatefulWidget {
   const SubjectTakenPage({super.key});
 
   @override
-  State<SubjectTakenPage> createState() => _SubjectTakenPageState();
+  State<SubjectTakenPage> createState() => _BottomNavigationBar();
 }
 
-class _SubjectTakenPageState extends State<SubjectTakenPage> {
+class _BottomNavigationBar extends State<SubjectTakenPage> {
   int _selectedPageIndex = 1; // Set to 1 to default to SubjectTakenPage
 
   void _navigateBottomBar(int index) {
@@ -33,7 +22,7 @@ class _SubjectTakenPageState extends State<SubjectTakenPage> {
   final List<Widget> _pages = [
     HomePage(),
     SubjectList(), // Create a separate widget for the subject list
-    const AuthPage(),
+    const ExamResultPage(),
   ];
 
   // Define which pages should show the bottom navigation bar
@@ -51,9 +40,8 @@ class _SubjectTakenPageState extends State<SubjectTakenPage> {
           ? BottomNavigationBar(
               currentIndex: _selectedPageIndex,
               onTap: _navigateBottomBar,
-              backgroundColor: Colors.deepPurple, // Set background color
-              selectedItemColor: Colors.amber, // Set selected item color
-              unselectedItemColor: Colors.white,
+              selectedItemColor: Colors.blue, // Set selected item color
+              unselectedItemColor: Colors.grey,
               type: BottomNavigationBarType
                   .fixed, // Ensure the background color is applied
               items: const [
@@ -66,8 +54,8 @@ class _SubjectTakenPageState extends State<SubjectTakenPage> {
                   label: "Subject Taken",
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.table_chart_rounded),
-                  label: "Attendance",
+                  icon: Icon(Icons.percent_rounded),
+                  label: "Exam Result",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
@@ -92,9 +80,9 @@ class SubjectList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 254, 236, 164),
-
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () =>
@@ -103,14 +91,13 @@ class SubjectList extends StatelessWidget {
           ),
         ],
         title: const Text(
-          "Subject Taken",
+          "SUBJECT TAKEN",
           style: TextStyle(
-            fontSize: 25,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: const Color.fromARGB(246, 255, 211, 80),
+        backgroundColor: Colors.blue,
       ),
       body: Column(
         children: [
@@ -118,34 +105,28 @@ class SubjectList extends StatelessWidget {
             child: ListView(
               children: const [
                 CustomCard(
-                  image: 'assets/NEUC_non_transparent.jpg',
+                  image: 'assets/forensic_banner.jpg',
                   title: 'Introduction of Forensic and Techniques',
                   lecturer: 'Alex Law Teng Yi',
                   backgroundColor: Colors.yellow,
                 ),
                 CustomCard(
-                  image: 'assets/NEUC_non_transparent.jpg',
+                  image: 'assets/information_technology_banner.jpg',
                   title: 'Introduction of Information Technology',
                   lecturer: 'Alex Law Teng Yi',
                   backgroundColor: Colors.pink,
                 ),
                 CustomCard(
-                  image: 'assets/NEUC_non_transparent.jpg',
+                  image: 'assets/android_banner.jpg',
                   title: 'Introduction of Android Programming',
                   lecturer: 'Mr Zulhilmi',
                   backgroundColor: Colors.blue,
                 ),
                 CustomCard(
-                  image: 'assets/NEUC_non_transparent.jpg',
+                  image: 'assets/operating_system_banner.jpg',
                   title: 'Introduction of Operating System',
                   lecturer: 'Mr Lee Jia Khang',
                   backgroundColor: Colors.orange,
-                ),
-                CustomCard(
-                  image: 'assets/NEUC_non_transparent.jpg',
-                  title: 'Security in Computing',
-                  lecturer: 'Cikgu Eliana',
-                  backgroundColor: Colors.green,
                 ),
               ],
             ),
@@ -181,10 +162,14 @@ class CustomCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(image),
+            Image.asset(
+              image,
+            ),
             Container(
               width: 320.0,
-              color: backgroundColor,
+              decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(10)),
               padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
