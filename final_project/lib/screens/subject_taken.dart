@@ -1,3 +1,4 @@
+import 'package:final_project/screens/attendance.dart';
 import 'package:final_project/screens/exam_result_page.dart';
 import 'package:final_project/screens/profile.dart';
 import 'package:flutter/material.dart';
@@ -96,8 +97,7 @@ class SubjectList extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () =>
-                _signoutuser(context), // Pass the context to _signoutuser
+            onPressed: () => _signoutuser(context),
             icon: const Icon(Icons.logout),
           ),
         ],
@@ -114,30 +114,74 @@ class SubjectList extends StatelessWidget {
         children: [
           Expanded(
             child: ListView(
-              children: const [
+              children: [
                 CustomCard(
                   image: 'assets/forensic_banner.jpg',
                   title: 'Introduction of Forensic and Techniques',
                   lecturer: 'Alex Law Teng Yi',
                   backgroundColor: Colors.yellow,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const attendance_page(
+                          subject: 'Introduction of Forensic and Techniques',
+                          lecturer: 'Alex Law Teng Yi',
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 CustomCard(
                   image: 'assets/information_technology_banner.jpg',
                   title: 'Introduction of Information Technology',
                   lecturer: 'Alex Law Teng Yi',
                   backgroundColor: Colors.pink,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const attendance_page(
+                          subject: 'Introduction of Information Technology',
+                          lecturer: 'Alex Law Teng Yi',
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 CustomCard(
                   image: 'assets/android_banner.jpg',
                   title: 'Introduction of Android Programming',
                   lecturer: 'Mr Zulhilmi',
                   backgroundColor: Colors.blue,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const attendance_page(
+                          subject: 'Introduction of Android Programming',
+                          lecturer: 'Mr Zulhilmi',
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 CustomCard(
                   image: 'assets/operating_system_banner.jpg',
                   title: 'Introduction of Operating System',
                   lecturer: 'Mr Lee Jia Khang',
                   backgroundColor: Colors.orange,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const attendance_page(
+                          subject: 'Introduction of Operating System',
+                          lecturer: 'Mr Lee Jia Khang',
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -148,11 +192,13 @@ class SubjectList extends StatelessWidget {
   }
 }
 
+
 class CustomCard extends StatelessWidget {
   final String image;
   final String title;
   final String lecturer;
   final Color backgroundColor;
+  final VoidCallback onTap;
 
   const CustomCard({
     super.key,
@@ -160,6 +206,7 @@ class CustomCard extends StatelessWidget {
     required this.title,
     required this.lecturer,
     required this.backgroundColor,
+    required this.onTap,
   });
 
   @override
@@ -167,20 +214,17 @@ class CustomCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(10),
       child: InkWell(
-        onTap: () {
-          // Handle card tap
-        },
+        onTap: onTap, //handle the tap function
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              image,
-            ),
+            Image.asset(image),
             Container(
               width: 320.0,
               decoration: BoxDecoration(
-                  color: backgroundColor,
-                  borderRadius: BorderRadius.circular(10)),
+                color: backgroundColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
               padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,3 +253,4 @@ class CustomCard extends StatelessWidget {
     );
   }
 }
+
