@@ -1,4 +1,5 @@
 import 'package:final_project/screens/exam_result_page.dart';
+import 'package:final_project/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/screens/home.dart';
 import 'package:final_project/services/auth_services.dart';
@@ -14,22 +15,32 @@ class _BottomNavigationBar extends State<SubjectTakenPage> {
   int _selectedPageIndex = 1; // Set to 1 to default to SubjectTakenPage
 
   void _navigateBottomBar(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
+    if (index == 2) {
+      // Navigate to ExamResultPage
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ExamResultPage()),
+      );
+    } else {
+      setState(() {
+        _selectedPageIndex = index;
+      });
+    }
   }
 
   final List<Widget> _pages = [
-    HomePage(),
-    SubjectList(), // Create a separate widget for the subject list
-    const ExamResultPage(),
+    const HomePage(),
+    SubjectList(),
+    const ExamResultPage(), // Placeholder for ExamResultPage
+    ProfileInfo(), // ProfileInfo widget
   ];
 
   // Define which pages should show the bottom navigation bar
   final List<bool> _showBottomNavBar = [
-    false, // Show BottomNavigationBar for HomePage
-    true, // Hide BottomNavigationBar for SubjectList
-    false, // Hide BottomNavigationBar for AuthPage
+    false,  // Hide BottomNavigationBar for HomePage
+    true,  // Show BottomNavigationBar for SubjectList
+    true,  // Show BottomNavigationBar for Exam Result
+    true,  // Show BottomNavigationBar for ProfileInfo
   ];
 
   @override
@@ -80,7 +91,7 @@ class SubjectList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [

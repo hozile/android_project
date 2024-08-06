@@ -1,3 +1,4 @@
+import 'package:final_project/screens/profile.dart';
 import 'package:final_project/screens/subject_taken.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/services/auth_services.dart';
@@ -20,16 +21,18 @@ class _ExamResultPageState extends State<ExamResultPage> {
   }
 
   final List<Widget> _pages = [
-    HomePage(),
+    const HomePage(),
     SubjectList(),
     _ResultList(), // Create a separate widget for the result list
+    ProfileInfo(),
   ];
 
   // Define which pages should show the bottom navigation bar
   final List<bool> _showBottomNavBar = [
-    false, // Hide BottomNavigationBar for HomePage
-    true, // Show BottomNavigationBar for SubjectList
-    true, // Show BottomNavigationBar for ExamResultPage
+    false,  // Hide BottomNavigationBar for HomePage
+    true,  // Show BottomNavigationBar for SubjectList
+    true,  // Show BottomNavigationBar for Exam Result
+    true,  // Show BottomNavigationBar for ProfileInfo
   ];
 
   @override
@@ -87,7 +90,7 @@ class _ResultListState extends State<_ResultList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
@@ -111,11 +114,6 @@ class _ResultListState extends State<_ResultList> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text(
-              'Exam Result',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
             Wrap(
               spacing: 10.0, // gap between adjacent chips
               children: [
@@ -133,6 +131,7 @@ class _ResultListState extends State<_ResultList> {
             ),
             const SizedBox(height: 16),
             const Divider(thickness: 2),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView(
                 children: [
@@ -140,21 +139,33 @@ class _ResultListState extends State<_ResultList> {
                       'Introduction of Forensic and Techniques', 'A-'),
                   _buildResultRow('TGEN123',
                       'Introduction To Information Technology', 'A-'),
-                  _buildResultRow('TGEN164', 'IT Ethics', 'A-'),
-                  _buildResultRow('TMAT113', 'Mathematics', 'A-'),
+                  _buildResultRow(
+                      'TGEN164', 'Introduction of Android Programming', 'A-'),
+                  _buildResultRow(
+                      'TMAT113', 'Introduction of Operating System', 'A-'),
                   _buildResultRow('TPRG113', 'Programming Concepts', 'A-'),
                 ],
               ),
             ),
             const Divider(thickness: 2),
-            const SizedBox(height: 16),
-            const Text(
-              'Current GPA: 3.82',
-              style: TextStyle(fontSize: 16),
-            ),
-            const Text(
-              'Cumulative GPA (CGPA): 3.90',
-              style: TextStyle(fontSize: 16),
+            const SizedBox(height: 80),
+            Container(
+              height: 60,
+              width: 300,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Center(
+                child: Text(
+                  'Current GPA: 3.82 \nCumulative GPA (CGPA): 3.90',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

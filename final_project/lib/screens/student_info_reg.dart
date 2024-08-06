@@ -1,37 +1,16 @@
 import 'package:final_project/screens/loginpage.dart';
+import 'package:final_project/screens/registerpage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:final_project/services/auth_services.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
-
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  
-  final TextEditingController _confirmpasswordController =
-      TextEditingController();
-  final AuthService _authService = AuthService();
-
-  Future<void> _register() async {
-    await _authService.registerWithEmailPassword(
-      context,
-      _emailController.text,
-      _passwordController.text,
-      _confirmpasswordController.text,
-    );
-  }
+class StudentInfoRegistrationPage extends StatelessWidget {
+  StudentInfoRegistrationPage({super.key});
+  final TextEditingController _studentFirstname = TextEditingController();
+  final TextEditingController _studentID = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text(
@@ -60,23 +39,26 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
           const Align(
-              alignment: Alignment(0.0, -0.6),
-              child: Text("Student Register",
-                  style: TextStyle(
-                    fontSize: 35,
-                    wordSpacing: 4,
-                    letterSpacing: 3,
-                    color: Colors.black,
-                  ))),
-          Padding(
+            alignment: Alignment(0.0, -0.6),
+            child: Text("Student Register",
+              style: TextStyle(
+                fontSize: 35,
+                wordSpacing: 4,
+                letterSpacing: 3,
+                color: Colors.black,
+              )
+            )
+          ),
+          const SizedBox(height: 20),
+                    Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
-                  controller: _emailController,
+                  controller: _studentFirstname,
                   decoration: const InputDecoration(
-                    labelText: 'Email',
+                    labelText: 'Student Name',
                     prefixIcon: Icon(Icons.email),
                     fillColor: Colors.white,
                     filled: true,
@@ -87,23 +69,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                  controller: _passwordController,
+                  controller: _studentID,
                   decoration: const InputDecoration(
                     labelText: 'Password',
-                    prefixIcon: Icon(Icons.lock),
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                  obscureText: true,
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: _confirmpasswordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Confirm Password',
                     prefixIcon: Icon(Icons.lock),
                     fillColor: Colors.white,
                     filled: true,
@@ -141,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginPage()),
+                                  builder: (context) => const LoginPage()),
                               );
                             },
                         ),
@@ -153,12 +121,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   width: 150,
                   child: ElevatedButton(
-                    onPressed: _register,
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const RegisterPage()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                     ),
                     child: const Text(
-                      'Register',
+                      'Continue Registration',
                       style: TextStyle(fontSize: 15, color: Colors.white),
                     ),
                   ),
@@ -167,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ],
-      ),
+      )
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:final_project/screens/registerpage.dart';
+import 'package:final_project/screens/student_info_reg.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/services/auth_services.dart';
@@ -123,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const RegisterPage()),
+                                    builder: (context) => StudentInfoRegistrationPage()),
                               );
                             },
                         ),
