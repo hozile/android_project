@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _weatherData = WeatherService().fetchWeatherInfo(); // 调用方法获取数据
+    _weatherData = WeatherService().fetchWeatherInfo(); 
   }
 
   @override

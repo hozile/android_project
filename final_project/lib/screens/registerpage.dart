@@ -1,4 +1,5 @@
 import 'package:final_project/screens/loginpage.dart';
+import 'package:final_project/screens/student_info_reg.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/services/auth_services.dart';
@@ -13,10 +14,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  
-  final TextEditingController _confirmpasswordController =
-      TextEditingController();
+  final TextEditingController _confirmpasswordController =TextEditingController();
   final AuthService _authService = AuthService();
 
   Future<void> _register() async {
@@ -151,7 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 30),
                 SizedBox(
-                  width: 150,
+                  width: 200,
                   child: ElevatedButton(
                     onPressed: _register,
                     style: ElevatedButton.styleFrom(
@@ -160,6 +158,25 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: const Text(
                       'Register',
                       style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StudentInfoRegistrationPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[50],
+                    ),
+                    child: const Text(
+                      'Back to Student Info',
+                      style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ),
                 ),

@@ -38,10 +38,10 @@ class _BottomNavigationBar extends State<SubjectTakenPage> {
 
   // Define which pages should show the bottom navigation bar
   final List<bool> _showBottomNavBar = [
-    false,  // Hide BottomNavigationBar for HomePage
-    true,  // Show BottomNavigationBar for SubjectList
-    true,  // Show BottomNavigationBar for Exam Result
-    true,  // Show BottomNavigationBar for ProfileInfo
+    false, // Hide BottomNavigationBar for HomePage
+    true, // Show BottomNavigationBar for SubjectList
+    true, // Show BottomNavigationBar for Exam Result
+    true, // Show BottomNavigationBar for ProfileInfo
   ];
 
   @override
@@ -116,7 +116,7 @@ class SubjectList extends StatelessWidget {
             child: ListView(
               children: [
                 CustomCard(
-                  image: 'assets/forensic_banner.jpg',
+                  imageUrl: 'https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Fforensic_banner.jpg?alt=media&token=30488a94-96fb-43c2-a464-def6acab800a',
                   title: 'Introduction of Forensic and Techniques',
                   lecturer: 'Alex Law Teng Yi',
                   backgroundColor: Colors.yellow,
@@ -133,7 +133,7 @@ class SubjectList extends StatelessWidget {
                   },
                 ),
                 CustomCard(
-                  image: 'assets/information_technology_banner.jpg',
+                  imageUrl: 'https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Finformation_technology_banner.jpg?alt=media&token=7677f257-18b3-4359-9f61-12f53bc3d5ad',
                   title: 'Introduction of Information Technology',
                   lecturer: 'Alex Law Teng Yi',
                   backgroundColor: Colors.pink,
@@ -150,7 +150,7 @@ class SubjectList extends StatelessWidget {
                   },
                 ),
                 CustomCard(
-                  image: 'assets/android_banner.jpg',
+                  imageUrl: 'https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Fandroid_banner.jpg?alt=media&token=16a01a39-e31a-4338-a26d-a7d1b7fd3c44',
                   title: 'Introduction of Android Programming',
                   lecturer: 'Mr Zulhilmi',
                   backgroundColor: Colors.blue,
@@ -167,7 +167,7 @@ class SubjectList extends StatelessWidget {
                   },
                 ),
                 CustomCard(
-                  image: 'assets/operating_system_banner.jpg',
+                  imageUrl: 'https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Foperating_system_banner.jpg?alt=media&token=3dd2be0e-878a-449c-b712-abf6a80f9365',
                   title: 'Introduction of Operating System',
                   lecturer: 'Mr Lee Jia Khang',
                   backgroundColor: Colors.orange,
@@ -192,9 +192,8 @@ class SubjectList extends StatelessWidget {
   }
 }
 
-
 class CustomCard extends StatelessWidget {
-  final String image;
+  final String imageUrl;
   final String title;
   final String lecturer;
   final Color backgroundColor;
@@ -202,7 +201,7 @@ class CustomCard extends StatelessWidget {
 
   const CustomCard({
     super.key,
-    required this.image,
+    required this.imageUrl,
     required this.title,
     required this.lecturer,
     required this.backgroundColor,
@@ -218,7 +217,7 @@ class CustomCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(image),
+            Image.network(imageUrl),
             Container(
               width: 320.0,
               decoration: BoxDecoration(
@@ -253,4 +252,3 @@ class CustomCard extends StatelessWidget {
     );
   }
 }
-

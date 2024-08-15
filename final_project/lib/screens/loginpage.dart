@@ -50,7 +50,9 @@ class _LoginPageState extends State<LoginPage> {
               width: 120.0,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/neuc_logo.png'),
+                  image: NetworkImage(
+                    'https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Fneuc_logo.png?alt=media&token=87fe7dec-d4f5-407d-8caa-49409cadbe98'
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),

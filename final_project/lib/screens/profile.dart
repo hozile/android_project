@@ -122,7 +122,7 @@ class ProfileInfo extends StatelessWidget {
                 border: Border.all(color: Colors.black, width: 1.8),
                 borderRadius: BorderRadius.circular(60),
                 image: const DecorationImage(
-                  image: AssetImage('assets/student_pic.jpg'),
+                  image: NetworkImage('https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Fstudent_pic.jpg?alt=media&token=b00be428-be6e-478c-aaa1-13e5cb35638a'),
                   fit: BoxFit.cover,
                 ),
               ),
