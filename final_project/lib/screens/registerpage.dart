@@ -1,5 +1,4 @@
 import 'package:final_project/screens/loginpage.dart';
-import 'package:final_project/screens/student_info_reg.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project/services/auth_services.dart';
@@ -51,7 +50,9 @@ class _RegisterPageState extends State<RegisterPage> {
               width: 120.0,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/neuc_logo.png'),
+                  image: NetworkImage(
+                    'https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Fneuc_logo.png?alt=media&token=87fe7dec-d4f5-407d-8caa-49409cadbe98'
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -113,14 +114,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 30),
                 InkWell(
-                  onTap: () {
-                    // Navigate to RegisterPage
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegisterPage()),
-                    );
-                  },
                   child: RichText(
                     text: TextSpan(
                       children: [
@@ -162,24 +155,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => StudentInfoRegistrationPage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[50],
-                    ),
-                    child: const Text(
-                      'Back to Student Info',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

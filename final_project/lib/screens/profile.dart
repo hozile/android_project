@@ -1,8 +1,11 @@
-import 'package:final_project/screens/exam_result_page.dart';
-import 'package:final_project/screens/home.dart';
-import 'package:final_project/screens/subject_taken.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:final_project/screens/home.dart';
+import 'package:final_project/screens/exam_result_page.dart';
+import 'package:final_project/screens/subject_taken.dart';
 import 'package:final_project/services/auth_services.dart';
+import 'package:flutter/painting.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,6 +16,17 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   int _selectedPageIndex = 3; // Set to 3 to default to ProfileInfo
+  Map<String, dynamic>? studentData;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchStudentInfo().then((data) {
+      setState(() {
+        studentData = data as Map<String, dynamic>?;
+      });
+    });
+  }
 
   void _navigateBottomBar(int index) {
     if (index == 2) {
@@ -31,16 +45,15 @@ class _ProfilePageState extends State<ProfilePage> {
   final List<Widget> _pages = [
     const HomePage(),
     SubjectList(),
-    const ExamResultPage(), // Placeholder for ExamResultPage
-    ProfileInfo(), // ProfileInfo widget
+    const ExamResultPage(),
+    ProfileInfo(),
   ];
 
-  // Define which pages should show the bottom navigation bar
   final List<bool> _showBottomNavBar = [
-    false,  // Hide BottomNavigationBar for HomePage
-    true,  // Show BottomNavigationBar for SubjectList
-    true,  // Show BottomNavigationBar for Exam Result
-    true,  // Show BottomNavigationBar for ProfileInfo
+    false,
+    true,
+    true,
+    true,
   ];
 
   @override
@@ -51,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ? BottomNavigationBar(
               currentIndex: _selectedPageIndex,
               onTap: _navigateBottomBar,
-              selectedItemColor: Colors.blue, // Set selected item color
+              selectedItemColor: Colors.blue,
               unselectedItemColor: Colors.grey,
               type: BottomNavigationBarType.fixed,
               items: const [
@@ -77,12 +90,96 @@ class _ProfilePageState extends State<ProfilePage> {
       body: _pages[_selectedPageIndex],
     );
   }
+
+  Future<List<Map<String, dynamic>>?> fetchStudentInfo() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Fetch student information
+        final studentInfoSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.email)
+            .get();
+
+        final studentCGPAQuery = FirebaseFirestore.instance
+            .collection("student_CGPA")
+            .doc("current_CGPA")
+            .collection('students')
+            .doc(user.email)
+            .get();
+
+        final cgpaData = await studentCGPAQuery;
+        final currentCgpa = cgpaData.data()?['currentCGPA'];
+        final List<Map<String, dynamic>> results = [];
+
+        if (studentInfoSnapshot.exists) {
+          final studentInfo = studentInfoSnapshot.data();
+
+          results.add({
+            'studentName': studentInfo?['studentName'],
+            'studentID': studentInfo?['studentID'],
+            'courseTaken': studentInfo?['courseTaken'],
+            'yearIntake': studentInfo?['yearIntake'],
+            'currentCGPA': currentCgpa,
+          });
+          // Combine the student info with the CGPA
+          return results;
+        }
+      }
+    } catch (e) {
+      print('Failed to fetch student info: $e');
+    }
+
+    return null;
+  }
 }
 
 class ProfileInfo extends StatelessWidget {
   ProfileInfo({super.key});
 
   final AuthService _authService = AuthService();
+
+  Future<Map<String, dynamic>?> fetchStudentInfo() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Fetch student information
+        final studentInfoSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.email)
+            .get();
+
+        final studentCGPAQuery = FirebaseFirestore.instance
+            .collection("student_CGPA")
+            .doc("current_CGPA")
+            .collection('students')
+            .doc(user.email)
+            .get();
+
+        final cgpaData = await studentCGPAQuery;
+        final currentCgpa = cgpaData.data()?['currentCGPA'];
+
+        if (studentInfoSnapshot.exists) {
+          final studentInfo = studentInfoSnapshot.data();
+
+          // Combine the student info with the CGPA
+          return {
+            'studentName': studentInfo?['studentName'],
+            'studentID': studentInfo?['studentID'],
+            'courseTaken': studentInfo?['courseTaken'],
+            'yearIntake': studentInfo?['yearIntake'],
+            'currentCGPA': currentCgpa,
+          };
+        }
+      }
+    } catch (e) {
+      print('Failed to fetch student info: $e');
+    }
+
+    return null;
+  }
 
   void _signoutuser(BuildContext context) {
     _authService.signOutUser(context);
@@ -96,7 +193,7 @@ class ProfileInfo extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () => _signoutuser(context), // Pass the context to _signoutuser
+            onPressed: () => _signoutuser(context),
             icon: const Icon(Icons.logout),
           ),
         ],
@@ -109,90 +206,105 @@ class ProfileInfo extends StatelessWidget {
         ),
         backgroundColor: Colors.blue,
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 30),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 120.0,
-              width: 120.0,
-              decoration: BoxDecoration(
-                color: Colors.amber,
-                border: Border.all(color: Colors.black, width: 1.8),
-                borderRadius: BorderRadius.circular(60),
-                image: const DecorationImage(
-                  image: NetworkImage('https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Fstudent_pic.jpg?alt=media&token=b00be428-be6e-478c-aaa1-13e5cb35638a'),
-                  fit: BoxFit.cover,
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: fetchStudentInfo(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('An error occurred!'));
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return const Center(child: Text('No data available.'));
+          }
+
+          final studentData = snapshot.data!;
+          return Column(
+            children: [
+              const SizedBox(height: 30),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: 120.0,
+                  width: 120.0,
+                  decoration: BoxDecoration(
+                    color: Colors.amber,
+                    border: Border.all(color: Colors.black, width: 1.8),
+                    borderRadius: BorderRadius.circular(60),
+                    image: const DecorationImage(
+                      image: NetworkImage(
+                          'https://firebasestorage.googleapis.com/v0/b/final-project-19699.appspot.com/o/assets%2Fstudent_pic.jpg?alt=media&token=b00be428-be6e-478c-aaa1-13e5cb35638a'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          const Text("아이유"),
-          const SizedBox(height: 40),
-          Card(
-            color: Colors.white,
-            elevation: 5,
-            margin:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Padding(
-                padding: EdgeInsets.all(30.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  padding: const EdgeInsets.all(
+                      10), // Optional: Add padding if needed
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(width: 2.0),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Aligns text to the start (left)
                     children: [
                       Text(
-                        'Student Name: IU',
-                        style: TextStyle(
+                        'Student Name: ${studentData['studentName']}',
+                        style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Text(
-                        'Student ID: 2312345',
-                        style: TextStyle(
+                        'Student ID: ${studentData['studentID']}',
+                        style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      SizedBox(height: 15),                        
+                      const SizedBox(height: 20),
                       Text(
-                        'Course Taken: Diploma in Computer Science',
-                        style: TextStyle(
+                        'Course Taken: ${studentData['courseTaken']}',
+                        style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),  
-                      SizedBox(height: 20),                        
-                      Text(
-                        'Year Intake: 2023',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                      SizedBox(height: 20),                        
+                      const SizedBox(height: 20),
                       Text(
-                        'Current CGPA: 3.9',
-                        style: TextStyle(
+                        'Year Intake: ${studentData['yearIntake']}',
+                        style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ]
-                  )
-            )
-          )
-        ],
-      )
+                      const SizedBox(height: 20),
+                      Text(
+                        'Current CGPA: ${studentData['currentCGPA'].toStringAsFixed(2) ?? '0.00'}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 }
