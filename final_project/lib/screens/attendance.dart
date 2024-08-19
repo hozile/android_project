@@ -24,53 +24,51 @@ class _AttendanceStatusPage extends State<attendance_page> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  bool _attendanceSigned =
-      false; // State variable to track if attendance is signed
+  bool _attendanceSigned = false; // State variable to track if attendance is signed
 
   void _signoutuser(BuildContext context) {
     _authService.signOutUser(context);
   }
-  
+
   Future<void> _checkAttendanceStatus() async {
-  User? user = _auth.currentUser;
-  if (user == null) {
-    return;
-  }
-  
-  String email = user.email!;
-  String subject = widget.subject;
+    User? user = _auth.currentUser;
+    if (user == null) {
+      return;
+    }
 
-  DocumentReference studentRef = _firestore
-      .collection('subjects')
-      .doc(subject)
-      .collection('students')
-      .doc(email);
+    String email = user.email!;
+    String subject = widget.subject;
 
-  // Get all weeks' attendance documents for the student
-  QuerySnapshot weeksSnapshot = await studentRef.collection('weeks').get();
+    DocumentReference studentRef = _firestore
+        .collection('subjects')
+        .doc(subject)
+        .collection('students')
+        .doc(email);
 
-  for (var doc in weeksSnapshot.docs) {
-    Map<String, dynamic>? weekData = doc.data() as Map<String, dynamic>?;
+    // Get all weeks' attendance documents for the student
+    QuerySnapshot weeksSnapshot = await studentRef.collection('weeks').get();
 
-    // Ensure the 'date' field exists and is a Timestamp
-    if (weekData != null && weekData.containsKey('date')) {
-      Timestamp timestamp = weekData['date'] as Timestamp;
-      DateTime weekDate = timestamp.toDate();
+    for (var doc in weeksSnapshot.docs) {
+      Map<String, dynamic>? weekData = doc.data() as Map<String, dynamic>?;
 
-      // If the date has passed and attendance was not marked
-      if (weekDate.isBefore(DateTime.now()) && weekData['attended'] != true) {
-        await doc.reference.update({'attended': false});
+      // Ensure the 'date' field exists and is a Timestamp
+      if (weekData != null && weekData.containsKey('date')) {
+        Timestamp timestamp = weekData['date'] as Timestamp;
+        DateTime weekDate = timestamp.toDate();
+
+        // If the date has passed and attendance was not marked
+        if (weekDate.isBefore(DateTime.now()) && weekData['attended'] != true) {
+          await doc.reference.update({'attended': false});
+        }
       }
     }
   }
-}
 
-@override
-void initState() {
-  super.initState();
-  _checkAttendanceStatus(); // Automatically check and mark attendance status if needed
-}
-
+  @override
+  void initState() {
+    super.initState();
+    _checkAttendanceStatus(); // Automatically check and mark attendance status if needed
+  }
 
   Future<void> _signAttendance() async {
     User? user = _auth.currentUser;
@@ -174,101 +172,141 @@ void initState() {
         title: const Text('ATTENDANCE'),
         backgroundColor: Colors.blue,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Container(
+      body: Stack(
+        children: [
+          Padding(
             padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(color: Colors.blue),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Attendance marked for ${widget.subject}',
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  'Lecturer: ${widget.lecturer}',
-                  style: const TextStyle(
-                      fontSize: 16, fontStyle: FontStyle.italic),
-                ),
-                const SizedBox(height: 20),
-                StreamBuilder<QuerySnapshot>(
-                  stream: _firestore
-                      .collection('subjects')
-                      .doc(widget.subject)
-                      .collection('students')
-                      .doc(email)
-                      .collection('weeks')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
-                    var weeks = snapshot.data!.docs;
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const [
-                          DataColumn(label: Text('Week Count')),
-                          DataColumn(label: Text('Date')),
-                          DataColumn(label: Text('Attended')),
-                        ],
-                        rows: weeks.map((week) {
-                          var weekData =
-                              week.data() as Map<String, dynamic>? ?? {};
-                          String weekCount = weekData['week'] ?? 'N/A';
-                          Timestamp? timestamp = weekData['date'] as Timestamp?;
-                          String date = timestamp != null
-                              ? DateFormat('yyyy-MM-dd')
-                                  .format(timestamp.toDate())
-                              : 'N/A';
-                          bool attended = weekData['attended'] != null &&
-                              weekData['attended'];
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(color: Colors.blue),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Attendance marked for ${widget.subject}',
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Lecturer: ${widget.lecturer}',
+                          style: const TextStyle(
+                              fontSize: 16, fontStyle: FontStyle.italic),
+                        ),
+                        const SizedBox(height: 20),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: _firestore
+                              .collection('subjects')
+                              .doc(widget.subject)
+                              .collection('students')
+                              .doc(email)
+                              .collection('weeks')
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const CircularProgressIndicator();
+                            }
+                            var weeks = snapshot.data!.docs;
+                            return SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                columns: const [
+                                  DataColumn(label: Text('Week Count')),
+                                  DataColumn(label: Text('Date')),
+                                  DataColumn(label: Text('Attended')),
+                                ],
+                                rows: weeks.map((week) {
+                                  var weekData =
+                                      week.data() as Map<String, dynamic>? ?? {};
+                                  String weekCount = weekData['week'] ?? 'N/A';
+                                  Timestamp? timestamp = weekData['date'] as Timestamp?;
+                                  String date = timestamp != null
+                                      ? DateFormat('yyyy-MM-dd')
+                                          .format(timestamp.toDate())
+                                      : 'N/A';
+                                  bool attended = weekData['attended'] != null &&
+                                      weekData['attended'];
 
-                          return DataRow(
-                            cells: [
-                              DataCell(Text(weekCount)),
-                              DataCell(Text(date)),
-                              DataCell(Text(attended ? 'Y' : 'N')),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 20),
-                _attendanceSigned
-                    ? const Text(
-                        'ATTENDANCE HAS SIGNED',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green),
-                      )
-                    : ElevatedButton(
-                        onPressed: _signAttendance,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(weekCount)),
+                                      DataCell(Text(date)),
+                                      DataCell(Text(attended ? 'Y' : 'N')),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          },
                         ),
-                        child: const Text(
-                          'Sign Attendance',
-                          style: TextStyle(fontSize: 15, color: Colors.white),
-                        ),
-                      ),
-              ],
+                        const SizedBox(height: 20),
+                        _attendanceSigned
+                            ? const Text(
+                                'ATTENDANCE HAS SIGNED',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green),
+                              )
+                            : ElevatedButton(
+                                onPressed: _signAttendance,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blueAccent,
+                                ),
+                                child: const Text(
+                                  'Sign Attendance',
+                                  style: TextStyle(fontSize: 15, color: Colors.white),
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+          const Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'PLEASE BE HONEST ON SIGNING ATTENDANCE',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12, // Smaller font size
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red, // Red color
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'DEDUCTION OF CREDIT MARK WILL BE TAKEN IF CHECKED DISHONEST ON SIGNING ATTENDANCE',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12, // Smaller font size
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red, // Red color
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
