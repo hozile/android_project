@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/screens/loginpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -165,6 +166,10 @@ class _StudentInfoRegistrationPageState extends State<StudentInfoRegistrationPag
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Student Info Saved Successfully')),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
           );
         }
       } catch (e) {
